@@ -15,7 +15,7 @@
         class="RchildOne"
         v-for="(item , index) in recommend"
         v-bind:key="item.id"
-        @click="enterDetail(index)"
+        @click="enterDetail(item,index)"
       >
         <div class="recommendLB">
           <div class="recommendLB1">高手妙招</div>
@@ -44,7 +44,7 @@
           class="loveGameandAPPCcard"
           v-for="(item , index) in loverGame.items"
           v-bind:key="item.id"
-          @click="enterDetail(index)"
+          @click="enterDetail(item,index)"
         >
           <div class="loveGameandAPPCcardL">
             <img :src="item.src" alt>
@@ -82,7 +82,7 @@
           class="loveGameandAPPCcard"
           v-for="(item , index) in freeApp.items"
           v-bind:key="item.id"
-          @click="enterDetail(index)"
+          @click="enterDetail(item,index)"
         >
           <div class="loveGameandAPPCcardL">
             <img :src="item.src" alt>
@@ -121,7 +121,7 @@
           class="loveGameandAPPCcard"
           v-for="(item , index) in freeApp.items"
           v-bind:key="item.id"
-          @click="enterDetail(index)"
+          @click="enterDetail(item,index)"
         >
           <div class="loveGameandAPPCcardL">
             <img :src="item.src" alt>
@@ -327,7 +327,10 @@ export default {
     };
   },
   methods: {
-    enterDetail() {},
+    enterDetail(item, index) {
+      this.$emit('toSoftwareInfo', this.toSoftwareInfo)
+
+    },
     checkMore() {
       this.$emit('func', this.changeNowmodel)
     }

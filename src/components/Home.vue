@@ -2,7 +2,8 @@
   <div>
     <el-container>
       <el-aside class="aside">
-        <div class="searchBox">
+        <div class="asideBack">
+                  <div class="searchBox">
           <el-autocomplete
             popper-class="my-autocomplete"
             v-model="state"
@@ -19,13 +20,13 @@
           </el-autocomplete>
         </div>
         <div class="category">
-          <div v-for="(item, index) in items" v-bind:key="item.id" class="categoryBox" @click="changeModle(index)">
+          <div v-for="(item, index) in items" v-bind:key="item.id" class="categoryBox" @click="toExplore(index)">
             <i :class="item.icon" class="icon"></i>
             {{ item.text }}
             <div v-if="item.number" class="tips">{{ item.number }}</div>
           </div>
         </div>
-        <div class="personCount">
+        <div class="personCount" @click="toPersonal">
             <div class="auheader">
                 <img :src="personInfo.img" alt="">
             </div>
@@ -38,22 +39,28 @@
                 </div>
             </div>
         </div>
+        </div>
+
       </el-aside>
       <el-main class="main" style="padding: 0 25px;">
-        <div :is="currentView" v-on:func="changeNowmodel"  ref="mychild"></div>
+        <div :is="currentView" v-on:func="changeNowmodel" v-on:toSoftwareInfo="toSoftwareInfo" v-on:toExplore="toExplore" v-on:AccountInfo="AccountInfo" ref="mychild"></div>
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
-import Explore from "./Explore.vue";
-import Singletype from "./Singletype.vue";
+import Explore from "./Explore.vue";  //主页
+import Singletype from "./Singletype.vue";  //软件List
+import AccountInfo from "./AccountInfo.vue";  //账户详情
+import Account from "./Account.vue";  //账户
+import SoftwareInfo from "./SoftwareInfo.vue"; //软件详情
+
 export default {
   name: "home",
   data() {
     return {
-      currentView: "Explore", // 默认选中第一项
+      currentView: "Account", // 默认选中第一项
       msg: "Welcome to Your Vue.js App",
       restaurants: [],
       state: "",
@@ -83,7 +90,10 @@ export default {
   },
   components: {
     Explore,
-    Singletype
+    Singletype,
+    Account,
+    SoftwareInfo,
+    AccountInfo,
   },
   methods: {
     querySearch(queryString, cb) {
@@ -227,12 +237,31 @@ export default {
     handleIconClick(ev) {
       console.log(ev);
     },
-    changeModle (val) {
+    //转到探索
+    toExplore (val = 0) {
         console.log(val)
         let that = this;
         if (val == 0) {
             that.currentView = "Explore";
         }
+    },
+
+    // 转到账户界面
+    toPersonal() {
+        let that = this;
+        that.currentView = "Account";
+    },
+  //转到账户详情
+      AccountInfo() {
+        let that = this;
+        that.currentView = "AccountInfo";
+    },
+    //转到软件详情
+    toSoftwareInfo (val) {
+      console.log(val);
+      console.log(122354456)
+      let that = this;
+      that.currentView = 'SoftwareInfo'
     },
 
     //改变模块
@@ -254,7 +283,13 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: #e1dedf;
+  position: relative;
+}
+.asideBack {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+    background-color: #e1dedf;
 }
 .main {
     overflow: hidden;
