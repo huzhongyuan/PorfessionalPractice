@@ -44,10 +44,12 @@ export default {
     };
   },
   methods: {
+    //app详情
     enterDetail(item, index) {
       sessionStorage.setItem('appId',item.id);
       this.$emit("enterDetail", this.enterDetail);
     },
+    //查看更多
     checkMore() {
       this.$emit("checkMore", this.checkMore);
     },
