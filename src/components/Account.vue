@@ -11,48 +11,18 @@
     <el-divider></el-divider>
 
         <!-- 最爱的游戏和APP -->
-    <div class="loveGameandAPP">
-      <div class="loveGameandAPPtitleBox">
-        <div class="loveGameandAPPtitleName">{{ loverGame.name }}</div>
-        <div class="checkMore" @click="checkMore">查看全部</div>
-      </div>
-      <div class="loveGameandAPPContent">
-        <div
-          class="loveGameandAPPCcard"
-          v-for="(item , index) in loverGame.items"
-          v-bind:key="item.id"
-          @click="enterDetail(item,index)"
-        >
-          <div class="loveGameandAPPCcardL">
-            <img :src="item.src" alt>
-          </div>
-          <div class="loveGameandAPPCcardR">
-            <div class="loveGameandAPPCcardRT overflow">
-                {{ item.title }}
-            </div>
-            <div class="loveGameandAPPCcardRc overflow">
-                {{ item.des }}
-            </div>
-            <div class="loveGameandAPPCcardRBox">
-              <div class="loveGameandAPPCcardRs ">
-                  {{ item.status }}
-              </div>
-              <div class="loveGameandAPPCcardRi" v-if="item.isInPrograme">
-                  {{ item.isInPrograme }}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+      <SoftwareList v-on:enterDetail="enterDetail" v-on:checkMore="checkMore" pageMessage="hasInstalled" ></SoftwareList>
   </div>
   
 </template>
 
 <script>
+import SoftwareList from "./child/SoftwareList";
 export default {
   name: 'Account',
+  components: {
+    SoftwareList
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -109,13 +79,27 @@ export default {
     }
   },
   methods: {
-    checkMore() {
-      this.$emit('func', this.changeNowmodel)
+    //转到软件详情
+    enterDetail(item, index) {
+      console.log(item);
+      sessionStorage.setItem('appId',item.appId)
+      this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
+
+    //查看更多
+    checkMore() {
+      sessionStorage.setItem('LoadPage', 'hasInstall')
+      this.$emit("func", this.changeNowmodel);
+    },
+
     //转到账户详情
     checkInfo() {
     this.$emit('AccountInfo', this.AccountInfo)
-    }
+    },
+  },
+  mounted() {
+
+
   }
 }
 </script>

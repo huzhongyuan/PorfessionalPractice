@@ -1,152 +1,30 @@
 <template>
   <div>
-          <div class="loveGameandAPP">
-      <div class="loveGameandAPPContent">
-        <div
-          class="loveGameandAPPCcard"
-          v-for="(item , index) in loverGame.items"
-          v-bind:key="item.id"
-          @click="enterDetail(index)"
-        >
-          <div class="loveGameandAPPCcardL">
-            <img :src="item.src" alt>
-          </div>
-          <div class="loveGameandAPPCcardR">
-            <div class="loveGameandAPPCcardRT overflow">
-                {{ item.title }}
-            </div>
-            <div class="loveGameandAPPCcardRc overflow">
-                {{ item.des }}
-            </div>
-            <div class="loveGameandAPPCcardRBox">
-              <div class="loveGameandAPPCcardRs ">
-                  {{ item.status }}
-              </div>
-              <div class="loveGameandAPPCcardRi" v-if="item.isInPrograme">
-                  {{ item.isInPrograme }}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+      <SoftwareList v-on:enterDetail="enterDetail"></SoftwareList>
   </div>
   
 </template>
 
 <script>
+import SoftwareList from "./child/SoftwareList";
+
 export default {
   name: 'Singletype',
+    components: {
+    SoftwareList
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-            loverGame: {
-        name: "我们最喜爱的App和游戏",
-        items: [
-          {
-            id: 0,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 1,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 2,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 3,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 4,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 5,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 6,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 7,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 8,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 9,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-                    {
-            id: 10,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          }
-        ]
-      },
     }
-  }
+  },
+    methods: {
+          //转到软件详情
+    enterDetail(item, index) {
+      console.log(item);
+      this.$emit("toSoftwareInfo", this.toSoftwareInfo);
+    },
+    }
 }
 </script>
 

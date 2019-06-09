@@ -31,18 +31,17 @@
     <!-- 走马灯 -->
     <div class="lunbo">
       <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 class="medium"></h3>
+        <el-carousel-item v-for="(item,index) in appPhoto" :key="index">
+          <img :src="item" alt="">
         </el-carousel-item>
       </el-carousel>
     </div>
 
     <!-- 折叠面板 -->
     <div class="collapes">
-      <el-collapse  accordion>
-        <el-collapse-item title="一致性 Consistency">
-          <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-          <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+      <el-collapse accordion>
+        <el-collapse-item title="软件详情">
+          <div>{{ appDetail }}</div>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -56,28 +55,27 @@
       <div class="newfunctionnewsTime">{{ newFunctionInfo.time }}</div>
     </div>
 
-        <!-- 分割线 -->
+    <!-- 分割线 -->
     <el-divider></el-divider>
     <!-- 信息 -->
     <div class="messages">
-        <div class="messageTitle">信息</div>
-        <div class="messageBox"  v-for="(item , index) in messages"
-          v-bind:key="index">
-            <div class="messagechild1" v-if="item.tip1">
-                <div class="messageTitleTip">{{ item.tip1 }}</div>
-                <div>{{ item.create }}</div>
-            </div>
-            <div class="messagechild2" v-if="item.tip1">
-               <div  class="messageTitleTip">{{ item.tip2 }}</div>
-                <div>{{ item.size }}</div>
-            </div>
-            <div class="messagechild3" v-if="item.tip1">
-                                <div  class="messageTitleTip">{{ item.tip3 }}</div>
-                <div>{{ item.type }}</div>
-            </div>
+      <div class="messageTitle">信息</div>
+      <div class="messageBox" v-for="(item , index) in messages" v-bind:key="index">
+        <div class="messagechild1" v-if="item.tip1">
+          <div class="messageTitleTip">{{ item.tip1 }}</div>
+          <div>{{ item.create }}</div>
         </div>
+        <div class="messagechild2" v-if="item.tip1">
+          <div class="messageTitleTip">{{ item.tip2 }}</div>
+          <div>{{ item.size }}</div>
+        </div>
+        <div class="messagechild3" v-if="item.tip1">
+          <div class="messageTitleTip">{{ item.tip3 }}</div>
+          <div>{{ item.type }}</div>
+        </div>
+      </div>
     </div>
-        <!-- 分割线 -->
+    <!-- 分割线 -->
     <el-divider></el-divider>
   </div>
 </template>
@@ -89,41 +87,43 @@ export default {
     return {
       msg: "Welcome to Your Vue.js App",
       info: {
-        src:
-          "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-        title: "The Gardens Between",
-        type: "游戏",
-        tipes: "the Voxel Agents",
-        money: "128元",
-        age: "4+"
+        src:'',
+        title: "",
+        type: "",
+        tipes: "",
+        money: "",
+        age: ""
       },
       value: 5,
+      appPhoto: [],
+      appDetail: '',
       newFunctionInfo: {
         id: 0,
-        info: "本次更新哈哈哈哈哈哈哈哈哈哈哈",
+        info: "",
         time: "2019/06/07"
       },
-      messages: [{
-          tip1: '开发者',
-          tip2: '大小',
-          tip3: '类别',
-          create: 'huzhongyuan',
-          size: '810.6 MB',
-          type: '游戏: 探险'
-      },
-      {
-          tip1: '兼容性',
-          tip2: '语言',
-          tip3: '年龄',
-          create: '可在xxx上使用',
-          size: '英文',
-          type: '4+'
-      },
-      {
-          tip1: '开发者',
-
-          create: 'huzhongyuan',
-      }]
+      messages: [
+        {
+          tip1: "开发者",
+          tip2: "大小",
+          tip3: "类别",
+          create: "",
+          size: "",
+          type: ""
+        },
+        {
+          tip1: "兼容性",
+          tip2: "语言",
+          tip3: "年龄",
+          create: "",
+          size: "",
+          type: ""
+        },
+        {
+          tip1: "开发者",
+          create: "huzhongyuan"
+        }
+      ]
     };
   },
   methods: {
@@ -133,7 +133,38 @@ export default {
     },
     score() {
       console.log(this.value);
+    },
+    //加载软件详情
+    LoadSoftInfo() {
+      let that = this;
+      that.$axios
+        .get(that.$url + "softWareInfo")
+        .then(function(response) {
+          console.log(response);
+          that.info.src = response.data[0].appIcon;
+          that.info.title = response.data[0].appName;
+          that.info.type = response.data[0].appType;
+          that.info.tipes = response.data[0].appDeveloper;
+          that.info.money = response.data[0].appCost;
+          that.info.age = "4+";
+          that.value = response.data[0].appRate;
+          that.appPhoto = response.data[0].appPhoto;
+          that.appDetail =  response.data[0].appDetail;
+          that.messages[0].create = response.data[0].appDeveloper;
+          that.messages[0].size = response.data[0].addSize;   
+          that.messages[0].type = response.data[0].appType;   
+          that.messages[1].create ='可在window7及以上使用';
+          that.messages[1].size = response.data[0].appLanguage;   
+          that.messages[1].type = '4+';
+          that.newFunctionInfo.info = response.data[0].appCopyRight    
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
+  },
+  mounted() {
+    this.LoadSoftInfo();
   }
 };
 </script>
@@ -248,27 +279,27 @@ export default {
 
 /* 信息 */
 .messageTitle {
-    font-size: 20px;
+  font-size: 20px;
 }
 .messageBox {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap-reverse;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  margin-top: 20px;
 }
 .messageBox > div {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .messagechild1 {
-    width: 30%;
+  width: 30%;
 }
 .messagechild2 {
-    width: 30%;
+  width: 30%;
 }
 .messagechild3 {
-    width: 30%;
+  width: 30%;
 }
 .messageTitleTip {
-    color: #cccccc;
+  color: #cccccc;
 }
 </style>

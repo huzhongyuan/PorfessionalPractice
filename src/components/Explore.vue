@@ -2,10 +2,10 @@
   <div>
     <!-- 走马灯 -->
     <el-carousel :interval="5000" arrow="always">
-      <el-carousel-item v-for="item in 4" :key="item">
+      <el-carousel-item v-for="(item, index) in Carouselsrc" :key="index">
         <!-- <h3>{{ item }}</h3> -->
         <!-- <img src="./assets/images/banner3.jpg" /> -->
-        <img :src="item.src" class="bannerImg">
+        <img :src="item" class="bannerImg">
       </el-carousel-item>
     </el-carousel>
 
@@ -14,15 +14,15 @@
       <div
         class="RchildOne"
         v-for="(item , index) in recommend"
-        v-bind:key="item.id"
+        v-bind:key="index"
         @click="enterDetail(item,index)"
       >
         <div class="recommendLB">
-          <div class="recommendLB1">高手妙招</div>
-          <div class="recommendLB2">告别杂乱告别杂乱告别杂乱告别杂乱告别杂乱</div>
+          <div class="recommendLB1"> {{ item.appWord }} </div>
+          <div class="recommendLB2">{{ item.appName }}</div>
           <div
             class="recommendLB3"
-          >lalalallalalalalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalall</div>
+          >{{ item.appDetail }}</div>
         </div>
         <div class="recommendRB">
           <img :src="item.src" alt>
@@ -33,307 +33,80 @@
     <!-- 分割线 -->
     <el-divider></el-divider>
 
-    <!-- 最爱的游戏和APP -->
-    <div class="loveGameandAPP">
-      <div class="loveGameandAPPtitleBox">
-        <div class="loveGameandAPPtitleName">{{ loverGame.name }}</div>
-        <div class="checkMore" @click="checkMore">查看全部</div>
-      </div>
-      <div class="loveGameandAPPContent">
-        <div
-          class="loveGameandAPPCcard"
-          v-for="(item , index) in loverGame.items"
-          v-bind:key="item.id"
-          @click="enterDetail(item,index)"
-        >
-          <div class="loveGameandAPPCcardL">
-            <img :src="item.src" alt>
-          </div>
-          <div class="loveGameandAPPCcardR">
-            <div class="loveGameandAPPCcardRT overflow">
-                {{ item.title }}
-            </div>
-            <div class="loveGameandAPPCcardRc overflow">
-                {{ item.des }}
-            </div>
-            <div class="loveGameandAPPCcardRBox">
-              <div class="loveGameandAPPCcardRs ">
-                  {{ item.status }}
-              </div>
-              <div class="loveGameandAPPCcardRi" v-if="item.isInPrograme">
-                  {{ item.isInPrograme }}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 分割线 -->
-    <el-divider></el-divider>
-    <!-- 免费APP和游戏排行 -->
-    <div class="loveGameandAPP">
-      <div class="loveGameandAPPtitleBox">
-        <div class="loveGameandAPPtitleName">{{ freeApp.name }}</div>
-        <div class="checkMore" @click="checkMore">查看全部</div>
-      </div>
-      <div class="loveGameandAPPContent">
-        <div
-          class="loveGameandAPPCcard"
-          v-for="(item , index) in freeApp.items"
-          v-bind:key="item.id"
-          @click="enterDetail(item,index)"
-        >
-          <div class="loveGameandAPPCcardL">
-            <img :src="item.src" alt>
-          </div>
-          <div class="loveGameandAPPCcardR">
-            <div class="loveGameandAPPCcardRT overflow">
-                {{ item.title }}
-            </div>
-            <div class="loveGameandAPPCcardRc overflow">
-                {{ item.des }}
-            </div>
-            <div class="loveGameandAPPCcardRBox">
-              <div class="loveGameandAPPCcardRs ">
-                  {{ item.status }}
-              </div>
-              <div class="loveGameandAPPCcardRi" v-if="item.isInPrograme">
-                  {{ item.isInPrograme }}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-  
-      <!-- 分割线 -->
-    <el-divider></el-divider>
-    <!-- 免费APP和游戏排行 -->
-    <div class="loveGameandAPP">
-      <div class="loveGameandAPPtitleBox">
-        <div class="loveGameandAPPtitleName">{{ PayApp.name }}</div>
-        <div class="checkMore" @click="checkMore">查看全部</div>
-      </div>
-      <div class="loveGameandAPPContent">
-        <div
-          class="loveGameandAPPCcard"
-          v-for="(item , index) in freeApp.items"
-          v-bind:key="item.id"
-          @click="enterDetail(item,index)"
-        >
-          <div class="loveGameandAPPCcardL">
-            <img :src="item.src" alt>
-          </div>
-          <div class="loveGameandAPPCcardR">
-            <div class="loveGameandAPPCcardRT overflow">
-                {{ item.title }}
-            </div>
-            <div class="loveGameandAPPCcardRc overflow">
-                {{ item.des }}
-            </div>
-            <div class="loveGameandAPPCcardRBox">
-              <div class="loveGameandAPPCcardRs ">
-                  {{ item.status }}
-              </div>
-              <div class="loveGameandAPPCcardRi" v-if="item.isInPrograme">
-                  {{ item.isInPrograme }}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+    <SoftwareList v-on:enterDetail="enterDetail" v-on:checkMore="checkMore" pageMessage="ExploreIndex"></SoftwareList>
   </div>
 </template>
 
 <script>
+import SoftwareList from "./child/SoftwareList";
+
 export default {
   name: "Explore",
+  components: {
+    SoftwareList
+  },
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      recommend: [
-        {
-          id: 0,
-          describ1: "高手妙招",
-          discrib2: "告别杂乱告别杂乱告别杂乱告别杂乱告别杂乱",
-          describ3: "lalalallalal",
-          src:
-            "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true"
-        },
-        {
-          id: 1,
-          describ1: "高手妙招",
-          discrib2: "告别杂乱告别杂乱告别杂乱告别杂乱告别杂乱",
-          describ3:
-            "lalalallalalalalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalallalalall",
-          src:
-            "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true"
-        }
-      ],
-      loverGame: {
-        name: "我们最喜爱的App和游戏",
-        items: [
-          {
-            id: 0,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 1,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 2,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 3,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 4,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          }
-        ]
-      },
-            freeApp: {
-        name: "免费APP和游戏排行",
-        items: [
-          {
-            id: 0,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 1,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 2,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 3,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 4,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          }
-        ]
-      },
-        PayApp: {
-        name: "付费APP和游戏排行",
-        items: [
-          {
-            id: 0,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 1,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 2,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 3,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          },
-          {
-            id: 4,
-            src:
-              "https://github.com/huzhongyuan/img/blob/master/U0LE%60S05%251FQ0BD~R9Q$BQ3.jpg?raw=true",
-            title: "hahha",
-            des: "llalalalal",
-            status: "获取",
-            isInPrograme: "APP内购买项目"
-          }
-        ]
-      }
+      Carouselsrc: [],
+      recommend: []
     };
   },
   methods: {
+    //转到软件详情
     enterDetail(item, index) {
-      this.$emit('toSoftwareInfo', this.toSoftwareInfo)
-
+      console.log(item);
+      this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
+
+    //查看更多
     checkMore() {
-      this.$emit('func', this.changeNowmodel)
+      sessionStorage.setItem('LoadPage', 'ExploreAll')
+      this.$emit("func", this.changeNowmodel);
+    },
+
+    //加载首页轮播图
+    loadIndexcarousel() {
+      let that = this;
+      that.$axios
+        .get(that.$url + "softWareInfo")
+        .then(function(response) {
+          console.log(response);
+          for (let i in response.data) {
+            that.Carouselsrc.push(response.data[i].appPhoto[0]);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //加载首页两个APP推荐
+    loadIndexRecommend() {
+        let that = this;
+      that.$axios
+        .get(that.$url + "softWareInfo")
+        .then(function(response) {
+          console.log(response);
+          for (let i in response.data.slice(0,2)) {
+            let arr = {
+              appId: response.data[i].appId,
+              appWord: response.data[i].appWord,
+              appName: response.data[i].appName,
+              appDetail: response.data[i].appDetail,
+              src: response.data[i].appIcon
+            }
+            that.recommend.push(arr);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
+  },
+  mounted() {
+    this.loadIndexcarousel();
+    this.loadIndexRecommend();
+
   }
 };
 </script>
@@ -478,12 +251,12 @@ export default {
 }
 .loveGameandAPPCcardR > div {
   margin-left: 10px;
-  width:100%;
+  width: 100%;
 }
 .overflow {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .loveGameandAPPCcardRT {
   /* margin-top: 10px; */
@@ -506,10 +279,10 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 2px 3px;
-  background-color: #F2F0F7;
+  background-color: #f2f0f7;
   text-align: center;
-  border-radius:10%;
-  color: #137AF8;
+  border-radius: 10%;
+  color: #137af8;
   cursor: pointer;
 }
 
