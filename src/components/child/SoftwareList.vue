@@ -36,6 +36,7 @@
 <script>
 export default {
   name: "SoftwareList",
+  props: ['pageMessage'],
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
@@ -155,7 +156,7 @@ export default {
     ExploreAll(response) {
       let that = this;
       let arr = response.data;
-      console.log(arr);
+      console.log("~~~~~~",arr);
       for (let i in arr) {
         that.items.push({
           id: arr[i].appId,
@@ -273,8 +274,14 @@ export default {
     }
   },
   mounted() {
-    //console.log(11111);
+    console.log(11111);
     this.handleData();
+  },
+  watch:{
+    pageMessage(newVal,OldVal){
+    this.items = [];
+     this.handleData();
+    }
   }
 };
 </script>

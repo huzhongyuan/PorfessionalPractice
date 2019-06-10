@@ -94,7 +94,7 @@ export default {
         money: "",
         age: ""
       },
-      value: 5,
+      value: '',
       appPhoto: [],
       appDetail: '',
       newFunctionInfo: {
@@ -170,6 +170,57 @@ export default {
   },
   mounted() {
     this.LoadSoftInfo();
+  },
+  
+  computed: {
+      listenshowpage1() {
+        console.log('changelalalallalalalal')
+        return this.$store.state.appId;
+      }
+    },
+  watch:{
+    listenshowpage1(newVal,OldVal){
+      console.log('changeId');
+      this.info = {
+        src:'',
+        title: "",
+        type: "",
+        tipes: "",
+        money: "",
+        age: ""
+      };
+      this.value = '';
+      this.appPhoto =  [];
+      this.appDetail = '';
+      this.newFunctionInfo = {
+        id: 0,
+        info: "",
+        time: "2019/06/07"
+      };
+      this.messages =  [
+        {
+          tip1: "开发者",
+          tip2: "大小",
+          tip3: "类别",
+          create: "",
+          size: "",
+          type: ""
+        },
+        {
+          tip1: "兼容性",
+          tip2: "语言",
+          tip3: "年龄",
+          create: "",
+          size: "",
+          type: ""
+        },
+        {
+          tip1: "开发者",
+          create: "huzhongyuan"
+        }
+      ]
+      this.LoadSoftInfo();
+    }
   }
 };
 </script>

@@ -53,7 +53,9 @@
           v-on:toSoftwareInfo="toSoftwareInfo"
           v-on:toExplore="toExplore"
           v-on:AccountInfo="AccountInfo"
+          :pageMessage = pageMessage
           ref="mychild"
+          v-if="hackReset"
         ></div>
       </el-main>
     </el-container>
@@ -62,15 +64,15 @@
 
 <script>
 import Explore from "./Explore.vue"; //主页
-import Singletype from "./Singletype.vue"; //软件List
+import Singletype from "./Singletype.vue"; //软件Lists
 import AccountInfo from "./AccountInfo.vue"; //账户详情
 import Account from "./Account.vue"; //账户
 import SoftwareInfo from "./SoftwareInfo.vue"; //软件详情
-
 export default {
   name: "home",
   data() {
     return {
+      hackReset: true,
       currentView: "Explore", // 默认选中第一项
       pageMessage: "",
       msg: "Welcome to Your Vue.js App",
@@ -191,7 +193,7 @@ export default {
       console.log(arr);
       return arr;
     },
-    //
+    //选择详细软件
     handleSelect(item) {
       console.log(item);
       this.$store.commit("changeAppId", item.appId);
@@ -217,32 +219,39 @@ export default {
         });
     },
     //转到探索
-    toExplore(val) {
+   toExplore(val) {
       console.log(val);
       let that = this;
       if (val == "0") {
-        this.$store.commit("changeLoadpage", "ExploreIndex");
-        that.currentView = "Explore";
+         this.$store.commit("changeLoadpage", "ExploreIndex");
+         that.currentView ="Explore";
         //$store.state.LoadPage = 'work';
       } else if (val == "1") {
         //sessionStorage.setItem('LoadPage', 'work');
         this.$store.commit("changeLoadpage", "work");
+        //that.currentView = "Explore";
         that.currentView = "Singletype";
+        that.pageMessage = 'work';
+        //window.location.reload();
       } else if (val == "2") {
         //sessionStorage.setItem('LoadPage', 'game');
-        this.$store.commit("changeLoadpage", "game");
-        that.currentView = "Singletype";
+       this.$store.commit("changeLoadpage", "game");
+       that.currentView = "Singletype";
+       that.pageMessage = 'game';
       } else if (val == "3") {
         //sessionStorage.setItem('LoadPage', 'develop');
         this.$store.commit("changeLoadpage", "develop");
+        that.pageMessage = 'develop';
         that.currentView = "Singletype";
       } else if (val == "4") {
         //sessionStorage.setItem('LoadPage', 'av');
         this.$store.commit("changeLoadpage", "av");
+        this.pageMessage ="av";
         that.currentView = "Singletype";
       } else if (val == "5") {
         //sessionStorage.setItem('LoadPage', 'life');
         this.$store.commit("changeLoadpage", "life");
+        this.pageMessage="life";
         that.currentView = "Singletype";
       }
     },

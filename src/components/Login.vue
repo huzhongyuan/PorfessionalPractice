@@ -204,7 +204,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .login {
-    margin-top: 100px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 100px; */
+    background-image: url(http://zuoyeimg.xueui.cn/o_1d1cs9ehi19pln4dlvgpl11hu6a_infinity_3.gif)
 }
   .text {
     font-size: 14px;

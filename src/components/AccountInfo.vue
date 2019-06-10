@@ -117,7 +117,6 @@ export default {
     },
     changeAabstract(item, index) {
       let that = this;
-      //console.log(item, index)
       this.$prompt("更改" + item.des, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -130,8 +129,6 @@ export default {
             type: "success",
             message: "你的" + item.des + "是: " + value
           });
-          //   console.log(item[index].info);
-          //   console.log(index);
           that.abstractDes[index].info = value;
         })
         .catch(() => {
@@ -157,8 +154,6 @@ export default {
             type: "success",
             message: "你的充值的金额为: " + value
           });
-          //   console.log(item[index].info);
-          //   console.log(index);
           that.manages[index].info = value;
                   this.$axios
           .post(
@@ -189,12 +184,10 @@ export default {
     },
     changeManages(item, index) {
       let that = this;
-      //console.log(item, index)
       this.$prompt("更改" + item.des, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /\S/,
-        ///[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
         inputErrorMessage: "不能为空"
       })
         .then(({ value }) => {
@@ -202,8 +195,6 @@ export default {
             type: "success",
             message: "你的" + item.des + "是: " + value
           });
-          //   console.log(item[index].info);
-          //   console.log(index);
           that.manages[index].info = value;
         })
         .catch(() => {

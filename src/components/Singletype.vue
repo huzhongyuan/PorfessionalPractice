@@ -1,6 +1,9 @@
 <template>
   <div>
-      <SoftwareList v-on:enterDetail="enterDetail"></SoftwareList>
+      <SoftwareList 
+        v-on:enterDetail="enterDetail"
+        :pageMessage = pageMessage
+        ></SoftwareList>
   </div>
   
 </template>
@@ -9,6 +12,7 @@
 import SoftwareList from "./child/SoftwareList";
 
 export default {
+  props: ['pageMessage'],
   name: 'Singletype',
     components: {
     SoftwareList
@@ -16,6 +20,12 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      message: ''
+    }
+  },
+  watch:{
+    pageMessage(newval,oldval){
+      console.log("1234",newval,oldval);
     }
   },
     methods: {
