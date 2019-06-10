@@ -105,11 +105,11 @@ export default {
     loadPersonInfo() {
       let that = this;
       that.$axios
-        .get(that.$url + "user")
+        .get(that.$url + "users/" + sessionStorage.getItem('userId'))
         .then(function(response) {
           console.log(response);
-          that.abstractDes[0].info = response.data[0]._id;
-          that.manages[0].info = response.data[0].userName;
+          that.abstractDes[0].info = response.data.data.userId;
+          that.manages[0].info = response.data.data.userName;
         })
         .catch(function(error) {
           console.log(error);
@@ -160,6 +160,25 @@ export default {
           //   console.log(item[index].info);
           //   console.log(index);
           that.manages[index].info = value;
+                  this.$axios
+          .post(
+             that.$url+"user/add",
+              that.$qs.stringify({
+                userId: sessionStorage.getItem('userId'),
+                account: value,
+              })
+
+          )
+          .then(res => {
+            console.log(res);
+
+            if (res.data.code == 1) {
+              alert('success')
+              this.$store.commit('changeAccount', '55444');
+            } else {
+             
+            }
+          });
         })
         .catch(() => {
           this.$message({

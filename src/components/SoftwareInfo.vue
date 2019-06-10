@@ -136,27 +136,32 @@ export default {
     },
     //加载软件详情
     LoadSoftInfo() {
+      //let appId = sessionStorage.getItem('appId');
+      let appId = this.$store.state.appId;
+      console.log('appId' + appId);
       let that = this;
       that.$axios
-        .get(that.$url + "softWareInfo")
+        .get(that.$url + "appDetail/" + appId)
         .then(function(response) {
           console.log(response);
-          that.info.src = response.data[0].appIcon;
-          that.info.title = response.data[0].appName;
-          that.info.type = response.data[0].appType;
-          that.info.tipes = response.data[0].appDeveloper;
-          that.info.money = response.data[0].appCost;
+          response = response.data;
+          console.log(response);
+          that.info.src = response.data.appIcon;
+          that.info.title = response.data.appName;
+          that.info.type = response.data.appType;
+          that.info.tipes = response.data.appDeveloper;
+          that.info.money = response.data.appCost;
           that.info.age = "4+";
-          that.value = response.data[0].appRate;
-          that.appPhoto = response.data[0].appPhoto;
-          that.appDetail =  response.data[0].appDetail;
-          that.messages[0].create = response.data[0].appDeveloper;
-          that.messages[0].size = response.data[0].addSize;   
-          that.messages[0].type = response.data[0].appType;   
+          that.value = response.data.appRate;
+          that.appPhoto = response.data.appPhoto;
+          that.appDetail =  response.data.appDetail;
+          that.messages[0].create = response.data.appDeveloper;
+          that.messages[0].size = response.data.appSize;   
+          that.messages[0].type = response.data.appType;   
           that.messages[1].create ='可在window7及以上使用';
-          that.messages[1].size = response.data[0].appLanguage;   
+          that.messages[1].size = response.data.appLanguage;   
           that.messages[1].type = '4+';
-          that.newFunctionInfo.info = response.data[0].appCopyRight    
+          that.newFunctionInfo.info = response.data.appCopyRight    
         })
         .catch(function(error) {
           console.log(error);

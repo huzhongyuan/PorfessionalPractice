@@ -99,7 +99,7 @@ export default {
         console.log(this.$md5(that.ruleForm2.pass))
         this.$axios
           .post(
-             that.$url+"user",
+             that.$url+"userLogin",
               that.$qs.stringify({
                 userName: that.ruleForm2.userName,
                 password: that.$md5(that.ruleForm2.pass),
@@ -108,8 +108,15 @@ export default {
           )
           .then(res => {
             console.log(res);
-            sessionStorage.setItem('userId','1')
-            this.$router.push({path: '/'})
+            //sessionStorage.setItem('userId','1');
+            if (res.data.code == 1) {
+              this.$store.commit('changeUserInfo', res.data.data);
+              sessionStorage.setItem('userId', res.data.data.userId);
+              this.$router.push({path: '/'})
+            } else {
+              alert(res.data.message);
+            }
+            
             // if (res.data.status == 0) {
             //   //把登录信息存入state
             //   this.$store.commit("loginState", {

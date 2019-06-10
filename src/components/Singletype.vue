@@ -19,9 +19,8 @@ export default {
     }
   },
     methods: {
-          //转到软件详情
+    //转到软件详情
     enterDetail(item, index) {
-      console.log(item);
       this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
     }

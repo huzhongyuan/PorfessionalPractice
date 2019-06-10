@@ -174,7 +174,7 @@ export default {
       let that = this;
         this.$axios
           .post(
-             this.$url + "user",
+             this.$url + "userRegister",
               that.$qs.stringify({
                 userName: that.ruleForm2.userName,
                 password: that.$md5(that.ruleForm2.pass),
@@ -184,8 +184,12 @@ export default {
           )
           .then(res => {
             console.log(res);
-            sessionStorage.setItem('userId','1')
-            this.$router.push({path: '/'})
+            //sessionStorage.setItem('userId','1')
+            if (res.data.code == 1) {
+              this.$router.push({path: '/login'})
+            } else {
+              alert(res.data.message);
+            }
             // if (res.data.status == 0) {
             //   //把登录信息存入state
             //   this.$store.commit("loginState", {

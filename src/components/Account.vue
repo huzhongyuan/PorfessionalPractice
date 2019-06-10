@@ -97,8 +97,12 @@ export default {
     this.$emit('AccountInfo', this.AccountInfo)
     },
   },
+    beforeCreate() {
+    //显示为首页6个推荐
+    sessionStorage.setItem('LoadPage', 'hasInstalled');
+  },
   mounted() {
-
+    // sessionStorage.setItem('LoadPage','hasInstalled')
 
   }
 }

@@ -33,7 +33,7 @@
     <!-- 分割线 -->
     <el-divider></el-divider>
 
-    <SoftwareList v-on:enterDetail="enterDetail" v-on:checkMore="checkMore" pageMessage="ExploreIndex"></SoftwareList>
+    <SoftwareList v-on:enterDetail="enterDetail" v-on:checkMore="checkMore" ></SoftwareList>
   </div>
 </template>
 
@@ -56,12 +56,15 @@ export default {
     //转到软件详情
     enterDetail(item, index) {
       console.log(item);
+      //sessionStorage.setItem('appId',item.appId)
+      //this.$store.commit('changeAppId', item.appId);
       this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
 
     //查看更多
     checkMore() {
-      sessionStorage.setItem('LoadPage', 'ExploreAll')
+      //sessionStorage.setItem('LoadPage', 'ExploreAll')
+      this.$store.commit('changeLoadpage', 'ExploreAll');
       this.$emit("func", this.changeNowmodel);
     },
 
@@ -69,11 +72,11 @@ export default {
     loadIndexcarousel() {
       let that = this;
       that.$axios
-        .get(that.$url + "softWareInfo")
+        .get(that.$url + "homeSlider")
         .then(function(response) {
           console.log(response);
-          for (let i in response.data) {
-            that.Carouselsrc.push(response.data[i].appPhoto[0]);
+          for (let i in response.data.data) {
+            that.Carouselsrc.push(response.data.data[i].appPhoto);
           }
         })
         .catch(function(error) {
@@ -84,16 +87,16 @@ export default {
     loadIndexRecommend() {
         let that = this;
       that.$axios
-        .get(that.$url + "softWareInfo")
+        .get(that.$url + "homeRecommed")
         .then(function(response) {
           console.log(response);
-          for (let i in response.data.slice(0,2)) {
+          for (let i in response.data.data.slice(0,2)) {
             let arr = {
-              appId: response.data[i].appId,
-              appWord: response.data[i].appWord,
-              appName: response.data[i].appName,
-              appDetail: response.data[i].appDetail,
-              src: response.data[i].appIcon
+              appId: response.data.data[i].appId,
+              appWord: response.data.data[i].appWord,
+              appName: response.data.data[i].appName,
+              appDetail: response.data.data[i].appDetail,
+              src: response.data.data[i].appPhoto
             }
             that.recommend.push(arr);
           }
@@ -103,10 +106,15 @@ export default {
         });
     }
   },
+  beforeCreate() {
+    //显示为首页6个推荐
+    //sessionStorage.setItem('LoadPage', 'ExploreIndex');
+    this.$store.commit('changeLoadpage', 'ExploreIndex');
+  },
   mounted() {
     this.loadIndexcarousel();
     this.loadIndexRecommend();
-
+    //this.$store.commit('changeLoadpage', 'ExploreIndex');
   }
 };
 </script>
@@ -191,7 +199,7 @@ export default {
 }
 .recommendRB img {
   width: 70%;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
 /* 最喜爱的App和游戏模块 */
