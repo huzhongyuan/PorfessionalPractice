@@ -5,7 +5,7 @@
     </div>
     <div class="header">
       <div class="headerphoto">
-        <img :src="info.src" alt>
+        <img :src="info.src"  alt>
       </div>
       <div class="headerContent">
         <div class="headerContentT">
@@ -30,9 +30,9 @@
 
     <!-- 走马灯 -->
     <div class="lunbo">
-      <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="(item,index) in appPhoto" :key="index">
-          <img :src="item" alt="">
+      <el-carousel :interval="4000" type="card" height="300px">
+        <el-carousel-item v-for="(item,index) in appPhoto" :key="index" style="height:300px;">
+          <img  :src="item" alt="">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -120,48 +120,44 @@ export default {
           type: ""
         },
         {
-          tip1: "开发者",
-          create: "huzhongyuan"
+          tip1: "版权",
+          create: ""
         }
       ]
     };
   },
   methods: {
     toback() {
-      //this.$router.go(-1);//返回上一层
       this.$emit("toExplore", this.toExplore);
     },
     score() {
-      console.log(this.value);
     },
     //加载软件详情
     LoadSoftInfo() {
-      //let appId = sessionStorage.getItem('appId');
       let appId = this.$store.state.appId;
-      console.log('appId' + appId);
       let that = this;
       that.$axios
         .get(that.$url + "appDetail/" + appId)
         .then(function(response) {
-          console.log(response);
+
           response = response.data;
-          console.log(response);
           that.info.src = response.data.appIcon;
           that.info.title = response.data.appName;
           that.info.type = response.data.appType;
           that.info.tipes = response.data.appDeveloper;
           that.info.money = response.data.appCost;
-          that.info.age = "4+";
+          that.info.age = response.data.appAge + "+";
           that.value = response.data.appRate;
           that.appPhoto = response.data.appPhoto;
           that.appDetail =  response.data.appDetail;
           that.messages[0].create = response.data.appDeveloper;
           that.messages[0].size = response.data.appSize;   
-          that.messages[0].type = response.data.appType;   
+          that.messages[0].type = response.data.type;   
           that.messages[1].create ='可在window7及以上使用';
           that.messages[1].size = response.data.appLanguage;   
-          that.messages[1].type = '4+';
-          that.newFunctionInfo.info = response.data.appCopyRight    
+          that.messages[1].type = response.data.appAge + "+";
+           that.messages[2].create =  response.data.appCopyRight;
+          that.newFunctionInfo.info = response.data.appCopyRight;    
         })
         .catch(function(error) {
           console.log(error);
@@ -174,13 +170,11 @@ export default {
   
   computed: {
       listenshowpage1() {
-        console.log('changelalalallalalalal')
         return this.$store.state.appId;
       }
     },
   watch:{
     listenshowpage1(newVal,OldVal){
-      console.log('changeId');
       this.info = {
         src:'',
         title: "",

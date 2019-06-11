@@ -81,7 +81,6 @@ export default {
   methods: {
     //转到软件详情
     enterDetail(item, index) {
-      console.log(item);
       sessionStorage.setItem('appId',item.appId)
       this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
@@ -102,7 +101,6 @@ export default {
     sessionStorage.setItem('LoadPage', 'hasInstalled');
   },
   mounted() {
-    // sessionStorage.setItem('LoadPage','hasInstalled')
 
   }
 }

@@ -58,11 +58,11 @@ export default {
     return {
       msg: "Welcome to Your Vue.js App",
       abstractDes: [
-        {
-          des: "ID: ",
-          info: "1224556222",
-          operate: "在xxx编辑"
-        },
+        // {
+        //   des: "ID: ",
+        //   info: "1224556222",
+        //   operate: "在xxx编辑"
+        // },
         {
           des: "付款信息: ",
           info: "没有信息记录",
@@ -105,10 +105,8 @@ export default {
     loadPersonInfo() {
       let that = this;
       that.$axios
-        .get(that.$url + "users/" + sessionStorage.getItem('userId'))
+        .get(that.$url + "users/" + sessionStorage.getItem("userId"))
         .then(function(response) {
-          console.log(response);
-          that.abstractDes[0].info = response.data.data.userId;
           that.manages[0].info = response.data.data.userName;
         })
         .catch(function(error) {
@@ -121,7 +119,6 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /\S/,
-        ///[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
         inputErrorMessage: "不能为空"
       })
         .then(({ value }) => {
@@ -141,12 +138,10 @@ export default {
     //充值
     recharge(item, index) {
       let that = this;
-      //console.log(item, index)
       this.$prompt("输入你要充值的金额", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /[0-9]/,
-        ///[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
         inputErrorMessage: "请输入数字"
       })
         .then(({ value }) => {
@@ -155,25 +150,20 @@ export default {
             message: "你的充值的金额为: " + value
           });
           that.manages[index].info = value;
-                  this.$axios
-          .post(
-             that.$url+"user/add",
+          this.$axios
+            .post(
+              that.$url + "user/add",
               that.$qs.stringify({
-                userId: sessionStorage.getItem('userId'),
-                account: value,
+                userId: sessionStorage.getItem("userId"),
+                account: value
               })
-
-          )
-          .then(res => {
-            console.log(res);
-
-            if (res.data.code == 1) {
-              alert('success')
-              this.$store.commit('changeAccount', '55444');
-            } else {
-             
-            }
-          });
+            )
+            .then(res => {
+              if (res.data.code == 1) {
+                this.$store.commit("changeAccount", res.data.data);
+              } else {
+              }
+            });
         })
         .catch(() => {
           this.$message({

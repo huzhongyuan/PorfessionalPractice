@@ -16,7 +16,8 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 Vue.prototype.$axios= axios
-Vue.prototype.$url = 'https://easy-mock.com/mock/5cfa1bee9a819c502224e497/PorfessionalPractice/'
+//Vue.prototype.$url = 'https://easy-mock.com/mock/5cfa1bee9a819c502224e497/PorfessionalPractice/'
+Vue.prototype.$url = 'http://172.20.10.2:3000/'
 Vue.prototype.$md5 = md5;
 Vue.prototype.$qs = qs;
 

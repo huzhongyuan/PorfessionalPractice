@@ -36,10 +36,10 @@
 <script>
 export default {
   name: "SoftwareList",
-  props: ['pageMessage'],
+  props: ["pageMessage"],
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
+      msg: "",
       items: [],
       title: null
     };
@@ -47,10 +47,8 @@ export default {
   methods: {
     //app详情
     enterDetail(item, index) {
-      //sessionStorage.setItem('appId',item.id);
       console.log(item);
       this.$store.commit("changeAppId", item.id);
-      // this.$store.state.appId = item.id
       console.log("app详情" + this.$store.state.appId);
       this.$emit("enterDetail", this.enterDetail);
     },
@@ -60,14 +58,11 @@ export default {
     },
     //获取APP
     getApp(index) {
-      //alert(this.items[index].id);
       let that = this;
       const h = this.$createElement;
       this.$msgbox({
         title: "消息",
         message: h("p", null, [
-          // h('span', null, '内容可以是 '),
-          // h('i', { style: 'color: teal' }, 'VNode')
           h(
             "span",
             null,
@@ -79,57 +74,56 @@ export default {
         cancelButtonText: "取消",
         beforeClose: (action, instance, done) => {
           if (action === "confirm") {
-            // instance.confirmButtonLoading = true;
-            // instance.confirmButtonText = '执行中...';
-            // setTimeout(() => {
-            //   done();
-            //   setTimeout(() => {
-            //     instance.confirmButtonLoading = false;
-            //   }, 300);
-            // }, 3000);
-            if (that.$store.state.userInfo.account >= that.items[index].appCost){
+            if (
+              that.$store.state.userInfo.account >= that.items[index].appCost
+            ) {
               that.$axios
                 .post(
                   that.$url + "user/reduce",
                   that.$qs.stringify({
                     userId: sessionStorage.getItem("userId"),
                     account: that.items[index].appCost
-                    // code: that.ruleForm2.verifyCode
                   })
                 )
                 .then(res => {
                   console.log(res);
-                  // done();
-                  if(res.data.code == 1) {
-                  this.$store.commit('changeAccount', '888888');
-                  window.open(that.items[index].appDownLoad);
-                   done();
+                  if (res.data.code == 1) {
+                    this.$store.commit("changeAccount", res.data.data);
+                    window.open(that.items[index].appDownLoad);
+                    done();
+                    //调用下载成功接口
+                    let appid = that.items[index].id;
+                    //下载成功
+                    that.$axios
+                      .post(
+                        that.$url + "user/download",
+                        that.$qs.stringify({
+                          userId: sessionStorage.getItem("userId"),
+                          appId: appid
+                        })
+                      )
+                      .then(res => {
+                        if (res.data.code == 1) {
+                          console.log("success!");
+                        }
+                      });
                   }
-
-                  // that.$alert(
-                  //   "<a>" + that.items[index].appDownLoad + "</a>",
-                  //   "下载链接",
-                  //   {
-                  //     dangerouslyUseHTMLString: true
-                  //   }
-                  // );
                 });
             } else {
-                const h = this.$createElement;
-                this.$notify({
-                  title: '标题名称',
-                  message: h('i', { style: 'color: teal'}, '请先充值')
-                });
+              const h = this.$createElement;
+              this.$notify({
+                title: "标题名称",
+                message: h("i", { style: "color: teal" }, "请先充值")
+              });
             }
-
           } else {
             done();
           }
         }
       }).then(action => {
         this.$message({
-          type: "info",
-          message: "action: " + action
+          type: "success",
+          message: "购买成功！"
         });
       });
     },
@@ -138,7 +132,6 @@ export default {
       let that = this;
       that.title = "我们最喜爱的app";
       let arr = response.data.slice(0, 6);
-      console.log(arr);
       for (let i in arr) {
         that.items.push({
           id: arr[i].appId,
@@ -156,7 +149,7 @@ export default {
     ExploreAll(response) {
       let that = this;
       let arr = response.data;
-      console.log("~~~~~~",arr);
+      console.log("~~~~~~", arr);
       for (let i in arr) {
         that.items.push({
           id: arr[i].appId,
@@ -184,7 +177,6 @@ export default {
           appDownLoad: arr[i].appDownLoad,
           des: arr[i].appWord,
           appCost: arr[i].appCost,
-          // des: arr[i].appWord,
           status: "获取",
           isInPrograme: "APP内购买项目"
         });
@@ -196,16 +188,10 @@ export default {
       that.$axios
         .get(that.$url + "AppList" + api)
         .then(function(response) {
-          console.log(response);
           if (that.$store.state.LoadPage == "ExploreAll") {
-            console.log(145214552);
             that.ExploreAll(response.data);
-            // //清空缓存
-            // sessionStorage.setItem('LoadPage' , '')
           } else if (that.$store.state.LoadPage == "ExploreIndex") {
-            console.log(12244);
             that.ExploreIndex(response.data);
-            //console.log(localStorage.getItem('LoadPage'));
           } else {
             that.ExploreAll(response.data);
           }
@@ -220,31 +206,15 @@ export default {
       that.$axios
         .get(that.$url + "users/" + sessionStorage.getItem("userId"))
         .then(function(response) {
-          console.log(response);
           that.hasInstall(response.data.data.hasInstalled);
         })
         .catch(function(error) {
-          console.log(error);
         });
     },
     handleData() {
       let that = this;
 
-      //       let that = this;
-      // that.$axios
-      //   .get(that.$url + "homeSlider")
-      //   .then(function(response) {
-      //     console.log(response);
-      //     for (let i in response.data.data) {
-      //       that.Carouselsrc.push(response.data.data[i].appPhoto);
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
-
       //判断具体调用的软件类型
-      //console.log(sessionStorage.getItem('LoadPage'))
       let api = "";
       console.log(that.$store.state.LoadPage);
       if (that.$store.state.LoadPage == "ExploreAll") {
@@ -277,10 +247,10 @@ export default {
     console.log(11111);
     this.handleData();
   },
-  watch:{
-    pageMessage(newVal,OldVal){
-    this.items = [];
-     this.handleData();
+  watch: {
+    pageMessage(newVal, OldVal) {
+      this.items = [];
+      this.handleData();
     }
   }
 };

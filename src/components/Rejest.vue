@@ -137,7 +137,6 @@ export default {
       let that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //alert("submit!");
           that.rejest();
         } else {
           console.log("error submit!!");
@@ -155,7 +154,6 @@ export default {
           type: 'warning'
         });
       } else {
-        //alert(that.ruleForm2.email);
         that.$axios.get(that.$url + "/userSystem/user/eMailCode", {
           params: {
             eMail: that.ruleForm2.email
@@ -183,43 +181,16 @@ export default {
               })
           )
           .then(res => {
-            console.log(res);
-            //sessionStorage.setItem('userId','1')
             if (res.data.code == 1) {
               this.$router.push({path: '/login'})
             } else {
               alert(res.data.message);
             }
-            // if (res.data.status == 0) {
-            //   //把登录信息存入state
-            //   this.$store.commit("loginState", {
-            //     userId: res.data.object.userId,
-            //     userName: res.data.object.userName
-            //   });
-            //   this.$router.push({path: '/'})
-            // } else if (res.data.status == 1) {
-            //   this.$alert("用户名、密码或验证码错误!", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            // } else if (res.data.status == 3) {
-            //   this.$alert("验证码错误或为空！", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            //   this.verifyCode(); //再次请求验证码
-            // } else {
-            //   this.$alert("登录失败！", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            // }
           });
     },
     //用户登陆
     Login () {
       let that = this;
-        console.log(that.ruleForm2.userName);
         this.$axios
           .post(
              this.$url + "/userSystem/session/user",
@@ -230,13 +201,7 @@ export default {
               })
           )
           .then(res => {
-            console.log(res);
             if (res.data.status == 0) {
-              //把登录信息存入state
-              // this.$store.commit("loginState", {
-              //   userId: this.userName,
-              //   userName: res.data.userMessage.userName
-              // });
               this.$router.push({path: '/'})
             } else if (res.data.status == 1) {
               this.$alert("用户名、密码或验证码错误!", "通知", {

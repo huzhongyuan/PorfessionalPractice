@@ -5,7 +5,7 @@
       <el-carousel-item v-for="(item, index) in Carouselsrc" :key="index">
         <!-- <h3>{{ item }}</h3> -->
         <!-- <img src="./assets/images/banner3.jpg" /> -->
-        <img :src="item" class="bannerImg">
+        <img :src="item" class="bannerImg" style="width:100%;">
       </el-carousel-item>
     </el-carousel>
 
@@ -15,7 +15,7 @@
         class="RchildOne"
         v-for="(item , index) in recommend"
         v-bind:key="index"
-        @click="enterDetail(item,index)"
+        @click="enterDetailRecommend(item ,index)"
       >
         <div class="recommendLB">
           <div class="recommendLB1"> {{ item.appWord }} </div>
@@ -56,14 +56,16 @@ export default {
     //转到软件详情
     enterDetail(item, index) {
       console.log(item);
-      //sessionStorage.setItem('appId',item.appId)
-      //this.$store.commit('changeAppId', item.appId);
       this.$emit("toSoftwareInfo", this.toSoftwareInfo);
     },
-
+    //通过推荐转到软件详情
+    enterDetailRecommend(item, index) {
+      console.log(item);
+      this.$store.commit('changeAppId', item.appId);
+      this.$emit("toSoftwareInfo", this.toSoftwareInfo);
+    },
     //查看更多
     checkMore() {
-      //sessionStorage.setItem('LoadPage', 'ExploreAll')
       this.$store.commit('changeLoadpage', 'ExploreAll');
       this.$emit("func", this.changeNowmodel);
     },
@@ -77,6 +79,8 @@ export default {
           console.log(response);
           for (let i in response.data.data) {
             that.Carouselsrc.push(response.data.data[i].appPhoto);
+            console.log(response.data.data[i].appPhoto);
+
           }
         })
         .catch(function(error) {
@@ -108,13 +112,11 @@ export default {
   },
   beforeCreate() {
     //显示为首页6个推荐
-    //sessionStorage.setItem('LoadPage', 'ExploreIndex');
     this.$store.commit('changeLoadpage', 'ExploreIndex');
   },
   mounted() {
     this.loadIndexcarousel();
     this.loadIndexRecommend();
-    //this.$store.commit('changeLoadpage', 'ExploreIndex');
   }
 };
 </script>

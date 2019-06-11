@@ -81,13 +81,11 @@ export default {
       ruleForm2: {
         userName: '',
         pass: "",
-        //checkPass: "",
         verifyCode: "",
       },
       rules2: {
         userName: [{ validator: user, trigger: "blur" }],
         pass: [{ validator: validatePass, trigger: "blur" }],
-        // verifyCode: [{ validator: checkverifyCode, trigger: "blur" }]
       },
       verifyCodeURL: '',//二维码链接
     };
@@ -95,62 +93,30 @@ export default {
   methods: {
     Login () {
       let that = this;
-        console.log(that.ruleForm2.userName);
-        console.log(this.$md5(that.ruleForm2.pass))
         this.$axios
           .post(
              that.$url+"userLogin",
               that.$qs.stringify({
                 userName: that.ruleForm2.userName,
                 password: that.$md5(that.ruleForm2.pass),
-                // code: that.ruleForm2.verifyCode
               })
           )
           .then(res => {
-            console.log(res);
-            //sessionStorage.setItem('userId','1');
             if (res.data.code == 1) {
               this.$store.commit('changeUserInfo', res.data.data);
               sessionStorage.setItem('userId', res.data.data.userId);
-              this.$router.push({path: '/'})
+              sessionStorage.setItem('surname',res.data.data.userName)
+              this.$router.push({path: '/home'})
             } else {
               alert(res.data.message);
             }
             
-            // if (res.data.status == 0) {
-            //   //把登录信息存入state
-            //   this.$store.commit("loginState", {
-            //     userId: res.data.object.userId,
-            //     userName: res.data.object.userName
-            //   });
-            //   this.$store.state.userId =  res.data.object.userId,
-            //   this.$store.state.userName =  res.data.object.userName,
-            //   console.log(this.$store.state.userId);
-            //   this.$router.push({path: '/'})
-            // } else if (res.data.status == 1) {
-            //   this.$alert("用户名、密码或验证码错误!", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            // } else if (res.data.status == 3) {
-            //   this.$alert("验证码错误或为空！", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            //   this.verifyCode(); //再次请求验证码
-            // } else {
-            //   this.$alert("登录失败！", "通知", {
-            //     confirmButtonText: "我知道了",
-            //     type: "error"
-            //   });
-            // }
           });
     },
     submitForm(formName) {
       let that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //alert("submit!");
           that.Login(that);
         } else {
           console.log("error submit!!");
@@ -189,13 +155,11 @@ export default {
           );
         })
         .then(data => {
-          console.log(data+'111111111111111111111111111');
           this.verifyCodeURL = data;
         });
     }
   },
   mounted () {
-    // this.verifyCode();
   },
 
 };

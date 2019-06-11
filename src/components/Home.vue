@@ -37,7 +37,9 @@
           </div>
           <div class="personCount" @click="toPersonal">
             <div class="auheader">
-              <img :src="personInfo.img" alt>
+              <!-- <img :src="personInfo.img" alt> -->
+              <!-- <div>{{ sessionStorage.setItem('appId',item.appId) }}</div> -->
+               <div class="surname">{{ surname }}</div>
             </div>
             <div class="personIBox">
               <div class="personName">{{ this.$store.state.userInfo.userName }}</div>
@@ -76,6 +78,7 @@ export default {
       currentView: "Explore", // 默认选中第一项
       pageMessage: "",
       msg: "Welcome to Your Vue.js App",
+      surname: '', //姓
       restaurants: [],
       state: "",
       items: [
@@ -150,7 +153,6 @@ export default {
           })
         )
         .then(response => {
-          console.log(response);
           for (let i in response.data.data) {
             let a = {
               value: response.data.data[i].appName,
@@ -162,7 +164,6 @@ export default {
         });
 
       cb(arr);
-      console.log(results);
     },
     createFilter(queryString) {
       return restaurant => {
@@ -178,7 +179,6 @@ export default {
       that.$axios
         .get(that.$url + "software")
         .then(function(response) {
-          console.log(response);
           for (let i in response.data) {
             let a = {
               value: response.data[i].appName,
@@ -190,14 +190,12 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-      console.log(arr);
       return arr;
     },
     //选择详细软件
     handleSelect(item) {
       console.log(item);
       this.$store.commit("changeAppId", item.appId);
-      //sessionStorage.setItem('appId',item.appId);
       this.toSoftwareInfo();
     },
     handleIconClick(ev) {
@@ -207,12 +205,11 @@ export default {
     personalInfo() {
       let that = this;
       that.$axios
-        .get(that.$url + "user")
+        .get(that.$url + "users/" + sessionStorage.getItem('userId'))
         .then(function(response) {
-          console.log(response);
-          that.personInfo.name = response.data[0].userName;
-          that.personInfo.money = response.data[0].account;
-          that.personInfo.id = response.data[0]._id;
+          that.personInfo.name = response.data.data.userName;
+          that.personInfo.money = response.data.data.account;
+          that.personInfo.id = response.data.data._id;
         })
         .catch(function(error) {
           console.log(error);
@@ -225,31 +222,23 @@ export default {
       if (val == "0") {
          this.$store.commit("changeLoadpage", "ExploreIndex");
          that.currentView ="Explore";
-        //$store.state.LoadPage = 'work';
       } else if (val == "1") {
-        //sessionStorage.setItem('LoadPage', 'work');
         this.$store.commit("changeLoadpage", "work");
-        //that.currentView = "Explore";
         that.currentView = "Singletype";
         that.pageMessage = 'work';
-        //window.location.reload();
       } else if (val == "2") {
-        //sessionStorage.setItem('LoadPage', 'game');
        this.$store.commit("changeLoadpage", "game");
        that.currentView = "Singletype";
        that.pageMessage = 'game';
       } else if (val == "3") {
-        //sessionStorage.setItem('LoadPage', 'develop');
         this.$store.commit("changeLoadpage", "develop");
         that.pageMessage = 'develop';
         that.currentView = "Singletype";
       } else if (val == "4") {
-        //sessionStorage.setItem('LoadPage', 'av');
         this.$store.commit("changeLoadpage", "av");
         this.pageMessage ="av";
         that.currentView = "Singletype";
       } else if (val == "5") {
-        //sessionStorage.setItem('LoadPage', 'life');
         this.$store.commit("changeLoadpage", "life");
         this.pageMessage="life";
         that.currentView = "Singletype";
@@ -270,9 +259,6 @@ export default {
     },
     //转到软件详情
     toSoftwareInfo() {
-      //console.log(val);
-      console.log(122354456);
-      //this.$store.commit('changeAppId', item.id);
       let that = this;
       that.currentView = "SoftwareInfo";
     },
@@ -284,12 +270,9 @@ export default {
     }
   },
   mounted() {
-    // this.restaurants = this.loadAll();
-    //sessionStorage.setItem('userId','0')
     //获取个人信息
     this.personalInfo();
-    console.log(1111);
-    console.log(this.$store.state.LoadPage);
+    this.surname = sessionStorage.getItem('surname').slice(0,1);
   }
 };
 </script>
@@ -302,6 +285,18 @@ export default {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+}
+.surname {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4B4A4B;
+  color: white;
+  font-size: 18px;
+  margin-left: 30px;
 }
 .asideBack {
   position: fixed;

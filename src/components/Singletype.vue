@@ -25,7 +25,7 @@ export default {
   },
   watch:{
     pageMessage(newval,oldval){
-      console.log("1234",newval,oldval);
+      //console.log("1234",newval,oldval);
     }
   },
     methods: {
