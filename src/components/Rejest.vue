@@ -130,7 +130,9 @@ export default {
     },
     //转到登陆界面
     toLogin () {
-        this.$router.push({path: '/Login'})
+
+        this.$router.push({path: '/'})
+
     },
     //提交表单
     submitForm(formName) {
@@ -182,7 +184,7 @@ export default {
           )
           .then(res => {
             if (res.data.code == 1) {
-              this.$router.push({path: '/login'})
+              this.$router.push({path: '/'})
             } else {
               alert(res.data.message);
             }
